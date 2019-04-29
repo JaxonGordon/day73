@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html>
 
@@ -13,20 +12,24 @@
         width: 45%;
         float: left;
     }
+
     .even {
-                height: 50px;
+        height: 50px;
         background: pink;
         border-style: solid;
         width: 45%;
         float: right;
     }
+
     input {
         /*   display:none; */
         /*   visibility:hidden; */
     }
+
     .correct {
         background-color: #00DD00;
     }
+
     .incorrect {
         background-color: red;
     }
@@ -43,6 +46,7 @@
     <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML'></script>
     <script id="rendered-js">
     console.clear();
+
     function makeQ(q, a, level) {
         let question = {}
         question.q = q;
@@ -51,10 +55,11 @@
         return question;
     }
     let questions = [];
-    questions.push(makeQ("2^3", "8", 1));
-    questions.push(makeQ("\\dfrac{1}{2}", ".5", 1));
-    questions.push(makeQ("\\dfrac{1}{2}", ".5", 1));
-    questions.push(makeQ("\\sqrt{16}", "4", 1));
+    // questions.push(makeQ("2^3", "8", 1));
+    // questions.push(makeQ("\\dfrac{1}{2}", ".5", 1));
+    // questions.push(makeQ("\\dfrac{1}{2}", ".5", 1));
+    // questions.push(makeQ("\\sqrt{16}", "4", 1));
+
     function makeTest(e) {
         for (let i = 0; i < questions.length; i++) {
             if (i % 2 == 1)
@@ -74,6 +79,15 @@
     }
     makeTest();
     $("input").change(checkAnswer);
+    $.getJSON('json', function(result) {
+        console.log(result);
+        $.each(result, function (i,field){
+            console.log(i,field);
+    questions.push(makeQ(field.q, field.a, field.level));
+        })
+        makeTest();
+    })
+
     function checkAnswer(e) {
         correct = $(this).data("answer");
         response = $(this).val();
